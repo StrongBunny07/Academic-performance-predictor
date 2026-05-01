@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Major Risk Summary</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap");
+
+      :root {
+        --bg: #f5f1e8;
+        --ink: #1b1a18;
+        --muted: #6d655d;
+        --panel: #ffffff;
+        --accent: #0e5b5b;
+        --danger: #b12a2a;
+        --border: rgba(27, 26, 24, 0.12);
+        --shadow: 0 20px 35px rgba(24, 20, 16, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 10% 0%, #fdf8ef 0%, transparent 55%),
+          radial-gradient(circle at 90% 10%, #e7f1f0 0%, transparent 45%),
+          linear-gradient(120deg, #f7f1e7 0%, #f2ede3 50%, #ebe4da 100%);
+        min-height: 100vh;
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 36px 20px 70px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .card + .card {
+        margin-top: 18px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-family: "Source Serif 4", "Times New Roman", serif;
+        font-size: clamp(28px, 4vw, 42px);
+      }
+
+      .subtitle,
+      .muted {
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .section-title {
+        font-size: 14px;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 12px;
+      }
+
+      .button-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .summary-list {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .summary-list li + li {
+        margin-top: 8px;
+      }
+
+      .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        font-size: 13px;
+        text-align: left;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      th {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 11px;
+        color: var(--muted);
+        background: #f9f6f1;
+      }
+
+      .empty-state {
+        color: var(--muted);
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 24px 16px 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="card">
+        <h1>Major Risk Summary</h1>
+        <p class="subtitle">This page summarizes only the students currently classified in the MAJOR risk band from the latest analyzed upload.</p>
+        <a class="button-link" href="/">Back to Analysis</a>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Latest Analysis</h2>
+        {% if has_analysis %}
+          <div class="muted">Source file: {{ filename or "Latest upload" }}</div>
+          {% if summary %}
+            <div class="muted" style="margin-top: 8px;">
+              Total: {{ summary.total }} | Major: {{ summary.major }} | Medium: {{ summary.medium }} | Minimal: {{ summary.minimal }}
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="empty-state">No analysis is available yet. Run an analysis from the home page first.</div>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Summary</h2>
+        <ul class="summary-list">
+          {% for line in summary_lines %}
+            <li>{{ line }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Major Risk Students</h2>
+        {% if major_students %}
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reg No</th>
+                  <th>Branch</th>
+                  <th>Hosteller</th>
+                  <th>CGPA</th>
+                  <th>Arrears</th>
+                  <th>Risk Probability</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in major_students %}
+                  <tr>
+                    <td>{{ row.regno }}</td>
+                    <td>{{ row.branch }}</td>
+                    <td>{{ row.hosteller }}</td>
+                    <td>{{ row.cgpa }}</td>
+                    <td>{{ row.arrears }}</td>
+                    <td>{{ row.risk_probability }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="empty-state">There are no MAJOR risk students in the latest analyzed upload.</div>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>

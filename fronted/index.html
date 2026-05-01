@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Student Risk Studio</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap");
+
+      :root {
+        --bg: #f5f1e8;
+        --ink: #1b1a18;
+        --muted: #6d655d;
+        --panel: #ffffff;
+        --accent: #0e5b5b;
+        --accent-soft: #e2f1ef;
+        --danger: #b12a2a;
+        --warning: #b58b00;
+        --success: #2c7a4b;
+        --border: rgba(27, 26, 24, 0.12);
+        --shadow: 0 20px 35px rgba(24, 20, 16, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 10% 0%, #fdf8ef 0%, transparent 55%),
+          radial-gradient(circle at 90% 10%, #e7f1f0 0%, transparent 45%),
+          linear-gradient(120deg, #f7f1e7 0%, #f2ede3 50%, #ebe4da 100%);
+        min-height: 100vh;
+      }
+
+      .page {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 36px 20px 70px;
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+
+      .title {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: "Source Serif 4", "Times New Roman", serif;
+        font-size: clamp(28px, 4vw, 42px);
+        letter-spacing: 0.4px;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        max-width: 700px;
+        line-height: 1.5;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .card + .card {
+        margin-top: 18px;
+      }
+
+      .section-title {
+        font-size: 14px;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin: 0 0 12px;
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+      }
+
+      .upload-row {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        align-items: center;
+      }
+
+      input[type="file"],
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        font-size: 14px;
+        background: #fbfaf7;
+        color: var(--ink);
+      }
+
+      .field-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        letter-spacing: 0.4px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(14, 91, 91, 0.2);
+      }
+
+      .action-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .button-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid rgba(14, 91, 91, 0.25);
+        padding: 12px 20px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .button-link:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(14, 91, 91, 0.12);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: #fff;
+      }
+
+      .alert {
+        border-radius: 12px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .alert.error {
+        background: #fbecec;
+        border-color: rgba(177, 42, 42, 0.25);
+        color: #7d1f1f;
+      }
+
+      .alert.warning {
+        background: #fff7de;
+        border-color: rgba(181, 139, 0, 0.3);
+        color: #6f5200;
+      }
+
+      .summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .summary .badge {
+        font-size: 13px;
+      }
+
+      .search-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 860px;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        font-size: 13px;
+        text-align: left;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      th {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 11px;
+        color: var(--muted);
+        background: #f9f6f1;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+      }
+
+      tr.risk-major {
+        background: #ffe5e5;
+      }
+
+      tr.risk-medium {
+        background: #fff4d2;
+      }
+
+      tr.risk-minimal {
+        background: #e5f7ed;
+      }
+
+      .muted {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+
+      .report-panel {
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: #f9f6f1;
+      }
+
+      .trend-plot {
+        display: block;
+        width: min(1200px, 100%);
+        margin: 14px auto 0;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .report-panel pre {
+        white-space: pre-wrap;
+        margin: 10px 0 0;
+        font-family: "Source Serif 4", "Times New Roman", serif;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 24px 16px 60px;
+        }
+
+        .upload-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="title">
+          <h1>Student Risk Studio</h1>
+          <p class="subtitle">
+            Upload the parsed student CSV, convert it into the backend-ready workbook inside the server, and instantly
+            see the risk forecast for every registration number.
+          </p>
+        </div>
+      </header>
+
+      <div class="card">
+        <h2 class="section-title">Upload</h2>
+        <form method="post" enctype="multipart/form-data">
+          <div class="upload-row">
+            <div>
+              <label class="field-label" for="csvFile">Student CSV</label>
+              <input id="csvFile" type="file" name="csv_file" accept=".csv" required />
+              <div class="note">Upload the parsed CSV file. The backend will temporarily convert it into the XLSX format needed for analysis.</div>
+            </div>
+            <div>
+              <label class="field-label" for="selectedSemester">Target semester</label>
+              <select id="selectedSemester" name="selected_semester">
+                <option value="2" {% if selected_semester == 2 %}selected{% endif %}>Semester 2</option>
+                <option value="3" {% if selected_semester == 3 %}selected{% endif %}>Semester 3</option>
+                <option value="4" {% if selected_semester == 4 %}selected{% endif %}>Semester 4</option>
+                <option value="5" {% if selected_semester == 5 %}selected{% endif %}>Semester 5</option>
+              </select>
+              <div class="note">Choose the semester you want to predict. The model uses earlier semesters as input for that target semester.</div>
+            </div>
+            <div>
+              <label class="field-label" for="analyzeButton">Run analysis</label>
+              <div class="action-row">
+                <button id="analyzeButton" type="submit">Analyze File</button>
+                <a class="button-link" href="/summary">Summary</a>
+              </div>
+            </div>
+          </div>
+        </form>
+        {% if filename %}
+          <div class="note">Loaded: {{ filename }} | Target semester: Semester {{ selected_semester }}</div>
+        {% endif %}
+      </div>
+
+      {% if error %}
+        <div class="card">
+          <div class="alert error">{{ error }}</div>
+        </div>
+      {% endif %}
+
+      {% if warnings %}
+        <div class="card">
+          <div class="alert warning">
+            {% for warning in warnings %}
+              <div>{{ warning }}</div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if results %}
+        <div class="card">
+          <div class="search-row">
+            <div>
+              <h2 class="section-title">Results</h2>
+              <div class="muted">Target semester: Semester {{ selected_semester }}. Filter by registration number to focus on a single student.</div>
+            </div>
+            <div style="min-width: 220px;">
+              <input id="regnoSearch" type="text" placeholder="Search regno" />
+            </div>
+          </div>
+
+          {% if summary %}
+            <div class="summary" style="margin: 16px 0 10px;">
+              <span class="badge">Total: {{ summary.total }}</span>
+              <span class="badge" style="border-color: rgba(177, 42, 42, 0.4); color: var(--danger);">Major: {{ summary.major }}</span>
+              <span class="badge" style="border-color: rgba(181, 139, 0, 0.4); color: var(--warning);">Medium: {{ summary.medium }}</span>
+              <span class="badge" style="border-color: rgba(44, 122, 75, 0.4); color: var(--success);">Minimal: {{ summary.minimal }}</span>
+            </div>
+          {% endif %}
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reg No</th>
+                  <th>Branch</th>
+                  <th>Risk Band</th>
+                  <th>Arrears</th>
+                  <th>Report</th>
+                </tr>
+              </thead>
+              <tbody id="resultsTable">
+                {% for row in results %}
+                  <tr class="{{ row.risk_class }}" data-regno="{{ row.regno }}">
+                    <td>{{ row.regno }}</td>
+                    <td>{{ row.branch }}</td>
+                    <td><span class="badge">{{ row.risk_band }}</span></td>
+                    <td>{{ row.arrears }}</td>
+                    <td>
+                      <button
+                        type="button"
+                        class="report-btn"
+                        data-student='{{ row.payload | tojson }}'
+                      >
+                        Generate
+                      </button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div id="trendPanel" class="report-panel" style="display: none; margin-bottom: 18px;">
+            <h3 class="section-title" style="margin-bottom: 10px;">Trend Analysis</h3>
+            <pre id="trendSummary"></pre>
+            <img id="trendPlot" class="trend-plot" alt="Semester trend plot" />
+          </div>
+
+          <div id="reportPanel" class="report-panel" style="display: none;">
+            <pre id="reportBody"></pre>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <script>
+      const searchInput = document.getElementById("regnoSearch");
+      if (searchInput) {
+        searchInput.addEventListener("input", () => {
+          const query = searchInput.value.trim().toLowerCase();
+          const rows = document.querySelectorAll("#resultsTable tr");
+          rows.forEach((row) => {
+            const regno = row.dataset.regno?.toLowerCase() || "";
+            row.style.display = regno.includes(query) ? "" : "none";
+          });
+        });
+      }
+
+      const reportButtons = document.querySelectorAll(".report-btn");
+      const trendPanel = document.getElementById("trendPanel");
+      const trendSummary = document.getElementById("trendSummary");
+      const trendPlot = document.getElementById("trendPlot");
+      const reportPanel = document.getElementById("reportPanel");
+      const reportBody = document.getElementById("reportBody");
+
+      reportButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+          const payload = JSON.parse(button.dataset.student || "{}");
+          if (!payload.regno) {
+            return;
+          }
+          button.disabled = true;
+          button.textContent = "Generating...";
+          reportBody.textContent = "Generating report...";
+          if (trendSummary) {
+            trendSummary.textContent = "Generating trend analysis...";
+          }
+          if (trendPlot) {
+            trendPlot.removeAttribute("src");
+          }
+          if (trendPanel) {
+            trendPanel.style.display = "block";
+          }
+          reportPanel.style.display = "block";
+
+          try {
+            const response = await fetch("/report", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+              throw new Error(data.error || "Report generation failed");
+            }
+            if (trendSummary) {
+              trendSummary.textContent = data.trend_summary || "No trend summary generated.";
+            }
+            if (trendPlot && data.trend_plot) {
+              trendPlot.src = `data:image/svg+xml;base64,${data.trend_plot}`;
+              trendPlot.style.display = "block";
+            } else if (trendPlot) {
+              trendPlot.style.display = "none";
+            }
+            reportBody.textContent = data.report || "No report generated.";
+          } catch (err) {
+            if (trendSummary) {
+              trendSummary.textContent = "Trend analysis failed.";
+            }
+            if (trendPlot) {
+              trendPlot.style.display = "none";
+            }
+            reportBody.textContent = err.message || "Report generation failed.";
+          } finally {
+            button.disabled = false;
+            button.textContent = "Generate";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

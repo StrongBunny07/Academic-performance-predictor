@@ -1,0 +1,68 @@
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Data files (ignore everywhere)
+*.csv
+*.xlsx
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / temp files
+.DS_Store
+Thumbs.db
+.~lock*
+
+# Logs
+*.log
+
+# Model files (optional - uncomment if needed)
+# *.pkl
+
+# VS Code
+.vscode/# Virtual environment
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Data files (ignore everywhere)
+*.csv
+*.xlsx
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / temp files
+.DS_Store
+Thumbs.db
+.~lock*
+
+# Logs
+*.log
+
+# Model files (optional - uncomment if needed)
+# *.pkl
+
+# VS Code
+.vscode/*.pdf
+*.ipynb
